@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Smart Home Printer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Smart Home Printer</h1>
+        </header>
+        <form action="{{ url_for('print_document') }}" method="post" enctype="multipart/form-data" class="print-form">
+            <label for="document">Select document to print:</label>
+            <input type="file" id="document" name="document" required>
+            <label for="copies">Number of copies:</label>
+            <input type="number" id="copies" name="copies" min="1" value="1" required>
+            <button type="submit">Print Document</button>
+        </form>
+        {% if message %}
+          <div class="message">{{ message }}</div>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,118 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+.container {
+    max-width: 400px;
+    margin: 40px auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 32px 24px;
+}
+header h1 {
+    text-align: center;
+    margin-bottom: 24px;
+}
+.print-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.print-form label {
+    font-weight: 500;
+}
+.print-form input[type="file"],
+.print-form input[type="number"] {
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+.print-form button {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.message {
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Light mode styles */
+@media (prefers-color-scheme: light) {
+    body {
+        background: #f6f8fa;
+        color: #2d3748;
+    }
+    .container {
+        background: #fff;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    header h1 {
+        color: #2d3748;
+    }
+    .print-form label {
+        color: #4a5568;
+    }
+    .print-form input[type="file"],
+    .print-form input[type="number"] {
+        border: 1px solid #cbd5e0;
+        background: #fff;
+        color: #2d3748;
+    }
+    .print-form button {
+        background: #3182ce;
+        color: #fff;
+    }
+    .print-form button:hover {
+        background: #2563eb;
+    }
+    .message {
+        background: #e6fffa;
+        color: #2c7a7b;
+        border: 1px solid #38b2ac;
+    }
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #181a20;
+        color: #e2e8f0;
+    }
+    .container {
+        background: #23272f;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    header h1 {
+        color: #90cdf4;
+    }
+    .print-form label {
+        color: #a0aec0;
+    }
+    .print-form input[type="file"],
+    .print-form input[type="number"] {
+        border: 1px solid #4a5568;
+        background: #1a202c;
+        color: #e2e8f0;
+    }
+    .print-form button {
+        background: #3182ce;
+        color: #fff;
+    }
+    .print-form button:hover {
+        background: #2563eb;
+    }
+    .message {
+        background: #2d3748;
+        color: #63b3ed;
+        border: 1px solid #3182ce;
+    }
+}
