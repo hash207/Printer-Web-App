@@ -1,8 +1,9 @@
 import os
 import subprocess as sp
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for, flash, get_flashed_messages
 
 app = Flask(__name__)
+app.secret_key = "your_secret_key_here"  # Set a secret key for flashing
 
 DOCS_FOLDER = os.path.join(os.path.dirname(__file__), "Documints")
 os.makedirs(DOCS_FOLDER, exist_ok=True)
@@ -58,7 +59,8 @@ def convert_docx_to_pdf(docx_path, pdf_path):
 
 @app.route("/")
 def home():
-    return render_template("home.html")
+    messages = get_flashed_messages()
+    return render_template("home.html", messages=messages)
 
 @app.route("/print", methods=["POST"])
 def print_document():
@@ -74,19 +76,20 @@ def print_document():
                 convert_docx_to_pdf(save_path, pdf_path)
                 file_to_print = pdf_path
             except Exception as e:
-                message = f"Error converting DOCX to PDF: {e}"
-                return render_template("home.html", message=message)
+                flash(f"Error converting DOCX to PDF: {e}")
+                return redirect(url_for("home"))
         else:
             file_to_print = save_path
         # Call the print function
         try:
             print_document_linux(file_to_print, copies=int(copies))
-            message = "Document sent to printer."
+            flash("Document sent to printer.")
         except Exception as e:
-            message = f"Error printing document: {e}"
+            flash(f"Error printing document: {e}")
+            return redirect(url_for("home"))
     else:
-        message = "No document uploaded."
-    return render_template("home.html", message=message)
+        flash("No document uploaded.")
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run("0.0.0.0")

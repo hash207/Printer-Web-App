@@ -9,6 +9,11 @@
         <header>
             <h1>Smart Home Printer</h1>
         </header>
+        {% if messages %}
+          {% for message in messages %}
+            <div class="message">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
         <form action="{{ url_for('print_document') }}" method="post" enctype="multipart/form-data" class="print-form">
             <label for="document">Select document to print:</label>
             <input type="file" id="document" name="document" required>
@@ -16,9 +21,6 @@
             <input type="number" id="copies" name="copies" min="1" value="1" required>
             <button type="submit">Print Document</button>
         </form>
-        {% if message %}
-          <div class="message">{{ message }}</div>
-        {% endif %}
     </div>
 </body>
 </html>
