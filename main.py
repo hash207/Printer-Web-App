@@ -60,7 +60,9 @@ def convert_docx_to_pdf(docx_path, pdf_path):
 @app.route("/")
 def home():
     messages = get_flashed_messages()
-    return render_template("home.html", messages=messages)
+    # List files in Documints folder
+    files = [f for f in os.listdir(DOCS_FOLDER) if os.path.isfile(os.path.join(DOCS_FOLDER, f))]
+    return render_template("home.html", messages=messages, files=files)
 
 @app.route("/print", methods=["POST"])
 def print_document():
@@ -91,5 +93,28 @@ def print_document():
         flash("No document uploaded.")
     return redirect(url_for("home"))
 
+@app.route("/print_file/<filename>", methods=["POST"])
+def print_file(filename):
+    file_path = os.path.join(DOCS_FOLDER, filename)
+    if not os.path.exists(file_path):
+        flash("File not found.")
+        return redirect(url_for("home"))
+    try:
+        print_document_linux(file_path)
+        flash(f"Printed {filename}.")
+    except Exception as e:
+        flash(f"Error printing {filename}: {e}")
+    return redirect(url_for("home"))
+
+@app.route("/delete_file/<filename>", methods=["POST"])
+def delete_file(filename):
+    file_path = os.path.join(DOCS_FOLDER, filename)
+    try:
+        os.remove(file_path)
+        flash(f"Deleted {filename}.")
+    except Exception as e:
+        flash(f"Error deleting {filename}: {e}")
+    return redirect(url_for("home"))
+
 if __name__ == "__main__":
-    app.run("0.0.0.0")
+    app.run("0.0.0.0", port=5001)

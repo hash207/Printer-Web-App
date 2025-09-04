@@ -3,17 +3,93 @@
 <head>
   <title>Smart Home Printer</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background: #222;
+            color: #fff;
+            height: 100vh;
+            padding: 20px 0;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #333;
+            margin: 8px 16px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 15px;
+            overflow: hidden;
+        }
+        .sidebar-label span {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .sidebar-btns {
+            display: flex;
+            gap: 4px;
+        }
+        .mini-btn {
+            background: #444;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            padding: 2px 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .mini-btn:hover {
+            background: #666;
+        }
+        .main-content {
+            flex: 1;
+            padding: 32px;
+        }
+        .flash-message {
+            background: #ffeeba;
+            color: #856404;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Smart Home Printer</h1>
-        </header>
-        {% if messages %}
-          {% for message in messages %}
-            <div class="message">{{ message }}</div>
-          {% endfor %}
-        {% endif %}
+    <div class="sidebar">
+        <h3 style="text-align:center; margin-bottom:16px;">Documints</h3>
+        {% for file in files %}
+        <div class="sidebar-label">
+            <span title="{{ file }}">{{ file }}</span>
+            <div class="sidebar-btns">
+                <form method="post" action="{{ url_for('print_file', filename=file) }}" style="display:inline;">
+                    <button type="submit" class="mini-btn" title="Print">&#128438;</button>
+                </form>
+                <form method="post" action="{{ url_for('delete_file', filename=file) }}" style="display:inline;" onsubmit="return confirm('Delete {{ file }}?');">
+                    <button type="submit" class="mini-btn" title="Delete">&#128465;</button>
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div style="color:#aaa; text-align:center; margin-top:32px;">No files found.</div>
+        {% endfor %}
+    </div>
+    <div class="main-content">
+        {% for msg in messages %}
+            <div class="flash-message">{{ msg }}</div>
+        {% endfor %}
+        <h2>Upload and Print Document</h2>
         <form action="{{ url_for('print_document') }}" method="post" enctype="multipart/form-data" class="print-form">
             <label for="document">Select document to print:</label>
             <input type="file" id="document" name="document" required>
