@@ -8,7 +8,7 @@ app.secret_key = "your_secret_key_here"  # Set a secret key for flashing
 DOCS_FOLDER = os.path.join(os.path.dirname(__file__), "Documints")
 os.makedirs(DOCS_FOLDER, exist_ok=True)
 
-def print_document_linux(file_path, printer_name=None, copies=1):
+def print_document_linux(file_path, copies=1):
     """
     Prints a document to a specified or default printer on Linux.
 
@@ -19,9 +19,6 @@ def print_document_linux(file_path, printer_name=None, copies=1):
         copies (int, optional): The number of copies to print. Defaults to 1.
     """
     command = ["lp"]
-
-    if printer_name:
-        command.extend(["-d", printer_name])
 
     if copies > 1:
         command.extend(["-n", str(copies)])
